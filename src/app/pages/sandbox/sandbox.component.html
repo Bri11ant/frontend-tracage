@@ -1,0 +1,71 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>SANDBOX</mat-card-title>
+    <mat-card-subtitle>Test API</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="item">
+      <h3>Title</h3>
+      <input type="text" #titleRef />
+    </div>
+    <div class="item">
+      <h3>Data</h3>
+      <textarea #dataRef cols="20" rows="10"></textarea>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="start">
+    <button mat-raised-button color="primary" (click)="onGetProjectList()">
+      Project list
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSelectProject(titleRef.value)"
+    >
+      Select project
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onCreateProject(titleRef.value)"
+    >
+      Create project
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onUpdateProject(titleRef.value, dataRef.value)"
+    >
+      Update project
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onOpenProject(titleRef.value, dataRef.value)"
+    >
+      Open project
+    </button>
+  </mat-card-actions>
+
+  <mat-card-footer *ngIf="resultType === 'project list'">
+    <h3>Project list</h3>
+    <p *ngFor="let project of projectList$ | async">
+      {{ project }}
+    </p>
+  </mat-card-footer>
+
+  <mat-card-footer
+    *ngIf="
+      resultType === 'select project' ||
+      resultType === 'create project' ||
+      resultType === 'open project' ||
+      resultType === 'update project'
+    "
+  >
+    <h3>Selected project</h3>
+    <p>Title: {{ project?.title }}</p>
+    <textarea cols="20" rows="10"> {{ project?.data }} </textarea>
+  </mat-card-footer>
+</mat-card>
