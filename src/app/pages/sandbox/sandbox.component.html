@@ -11,7 +11,11 @@
     </div>
     <div class="item">
       <h3>Data</h3>
-      <textarea #dataRef cols="20" rows="10"></textarea>
+      <textarea #dataRef cols="40" rows="10"></textarea>
+    </div>
+    <div class="item">
+      <h3>File</h3>
+      <input type="file" accept=".json" (change)="onChange($event)" />
     </div>
   </mat-card-content>
 
@@ -40,17 +44,13 @@
     >
       Update project
     </button>
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="onOpenProject(titleRef.value, dataRef.value)"
-    >
+    <button mat-raised-button color="primary" (click)="openProject()">
       Open project
     </button>
   </mat-card-actions>
 
   <mat-card-footer *ngIf="resultType === 'project list'">
-    <h3>Project list</h3>
+    <h3>{{ resultType | uppercase }}</h3>
     <p *ngFor="let project of projectList$ | async">
       {{ project }}
     </p>
@@ -64,8 +64,8 @@
       resultType === 'update project'
     "
   >
-    <h3>Selected project</h3>
+    <h3>{{ resultType | uppercase }}</h3>
     <p>Title: {{ project?.title }}</p>
-    <textarea cols="20" rows="10"> {{ project?.data }} </textarea>
+    <textarea cols="40" rows="10"> {{ project?.data }} </textarea>
   </mat-card-footer>
 </mat-card>

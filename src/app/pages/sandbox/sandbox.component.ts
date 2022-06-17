@@ -12,6 +12,7 @@ export class SandboxComponent implements OnInit {
   PROJECT_PATH = this.ROOT_PATH + 'projects/';
 
   project?: { title: string; data: string };
+  selectedFile?: { title: string; data: string };
   projectList$ = new Observable<string[]>();
 
   resultType?:
@@ -44,13 +45,19 @@ export class SandboxComponent implements OnInit {
     );
   }
 
-  onOpenProject(title: string, data: string) {
+  openProject() {
+    if (!this.selectedFile) {
+      alert('Select a JSON file');
+      return;
+    }
+    let title = this.selectedFile.title;
+    let data = this.selectedFile.data;
+
     if (!title || !title.trim() || !data || !data.trim()) {
       alert('Invalid parameter!');
       return;
     }
     title = title.trim();
-    data = data.trim();
 
     this.resultType = 'open project';
     this.http.post(this.PROJECT_PATH, { title, data }).subscribe(
@@ -60,6 +67,21 @@ export class SandboxComponent implements OnInit {
           data: string;
         })
     );
+  }
+
+  onChange($event: Event) {
+    const file: File = ($event.target as any).files[0];
+    if (!file) {
+      return;
+    }
+    const fileReader = new FileReader();
+    fileReader.onloadend = ($ev: any) => {
+      this.selectedFile = {
+        title: file.name.toLowerCase().split('.json')[0],
+        data: fileReader.result as string,
+      };
+    };
+    fileReader.readAsText(file);
   }
 
   onUpdateProject(title: string, data: string) {
