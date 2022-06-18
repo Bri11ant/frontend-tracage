@@ -1,0 +1,112 @@
+.background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-image: linear-gradient(
+    to left,
+    rgb(92, 146, 182),
+    rgb(85, 175, 132)
+  );
+
+  .container {
+    height: 90%;
+    width: 970px;
+    border-radius: 1rem;
+    background-color: #2d2d2d;
+    color: whitesmoke;
+    font-weight: 500;
+    display: flex;
+
+    section.left-side {
+      flex: 1;
+      padding: 2rem 2rem;
+
+      header {
+        // border: 1px solid dodgerblue;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .main-title {
+          text-transform: uppercase;
+          color: goldenrod;
+          font-weight: bold;
+          letter-spacing: 0.1rem;
+          word-spacing: 0.3rem;
+          margin-bottom: 1rem;
+        }
+
+        h2 {
+          text-transform: uppercase;
+          font-weight: bold;
+          letter-spacing: 0.1rem;
+          word-spacing: 0.3rem;
+        }
+      }
+
+      .items {
+        // border: 1px solid red;
+        padding: 1rem 2rem 0 1rem;
+        overflow: auto;
+        height: calc(100% - 10vh);
+        border-bottom: 1px solid goldenrod;
+        border-top: 1px solid goldenrod;
+        border-radius: 1rem;
+
+        .item {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1rem;
+
+          .label {
+            display: flex;
+            // border: 1px solid yellow;
+            align-items: center;
+            position: relative;
+            top: 0.2rem;
+
+            .eye-icon {
+              margin-left: 1rem;
+              margin-right: 1.5rem;
+              transform: scale(0.9);
+              opacity: 0.8;
+
+              &:hover {
+                opacity: 1;
+              }
+            }
+
+            mat-icon {
+              opacity: 0.8;
+
+              &:hover {
+                opacity: 1;
+              }
+            }
+
+            p {
+              position: relative;
+              top: 0.4rem;
+              cursor: pointer;
+            }
+          }
+          input {
+            width: 40%;
+          }
+        }
+      }
+    }
+
+    aside.right-side {
+      width: 400px;
+      background-color: #222;
+      border-top-right-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+    }
+  }
+}

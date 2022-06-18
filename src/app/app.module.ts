@@ -7,9 +7,10 @@ import { AppComponent } from './app.component';
 import { SandboxComponent } from './pages/sandbox/sandbox.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, SandboxComponent],
+  declarations: [AppComponent, SandboxComponent, HomeComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, MaterialModule],
   providers: [],
   bootstrap: [AppComponent],

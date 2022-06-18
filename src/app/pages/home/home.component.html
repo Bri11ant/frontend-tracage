@@ -1,0 +1,25 @@
+<div class="background">
+  <div class="container">
+    <section class="left-side">
+      <header>
+        <div class="mat-display-2 main-title">Fast tracing</div>
+        <h2>Project title</h2>
+      </header>
+
+      <section class="items">
+        <div class="item" *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">
+          <div class="label">
+            <mat-icon class="mat-18">more_vert</mat-icon>
+            <mat-icon class="mat-18 eye-icon">
+              {{ i % 2 === 0 ? "visibility" : "visibility_off" }}
+            </mat-icon>
+            <p>Lorem ipsum dolor {{ i }}</p>
+          </div>
+          <input type="text" />
+        </div>
+      </section>
+    </section>
+
+    <aside class="right-side">Preview</aside>
+  </div>
+</div>
