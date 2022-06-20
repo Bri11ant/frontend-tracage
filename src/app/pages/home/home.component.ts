@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  projectData = new ProjectModel('', '{ }', []);
+  projectData = new ProjectModel('', '{ }');
   references: string[] = [];
 
   constructor(private dialog: MatDialog, private homeService: HomeService) {}

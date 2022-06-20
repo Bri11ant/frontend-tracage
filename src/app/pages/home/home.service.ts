@@ -1,3 +1,4 @@
+import { ProjectModel } from './../../models/models';
 import { DATA_SAMPLE_PROJECT } from './../../data/project.data';
 import { Injectable } from '@angular/core';
 
@@ -5,7 +6,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class HomeService {
-  projectData = DATA_SAMPLE_PROJECT;
+  // projectData = DATA_SAMPLE_PROJECT;
+  projectData = new ProjectModel('', '{ }');
   references: string[] = [];
 
   constructor() {

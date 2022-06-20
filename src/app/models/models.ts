@@ -12,6 +12,6 @@ export class ProjectModel {
   constructor(
     public title: string,
     public json: string,
-    public keys: KeyModel[] = [new KeyModel('title', true)]
+    public keys: KeyModel[] = [new KeyModel('titre', true)]
   ) {}
 }
