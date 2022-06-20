@@ -6,6 +6,17 @@ import { Injectable } from '@angular/core';
 })
 export class HomeService {
   projectData = DATA_SAMPLE_PROJECT;
+  references: string[] = [];
 
-  constructor() {}
+  constructor() {
+    this.refreshReferences();
+  }
+
+  refreshReferences() {
+    this.references = this.projectData.keys
+      .filter((k) => k.pin)
+      .map((k) => k.id);
+
+    return this.references;
+  }
 }

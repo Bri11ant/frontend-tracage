@@ -16,7 +16,7 @@
     width: 1150px;
     border-radius: 1rem;
     background-color: #2d2d2d;
-    color: whitesmoke;
+    color: rgba(245, 245, 245, 0.911);
     font-weight: 500;
     display: flex;
 
@@ -52,7 +52,7 @@
 
       .items {
         // border: 1px solid red;
-        padding: 1rem 2rem 0 1rem;
+        padding: 1rem 2rem 1rem 1rem;
         overflow: auto;
         border-bottom: 1px solid goldenrod;
         border-top: 1px solid goldenrod;
@@ -63,7 +63,7 @@
           width: 100%;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 0.3rem;
+          // margin-bottom: 0.1rem;
 
           input {
             color: #222;
@@ -106,19 +106,35 @@
           }
           input {
             width: 40%;
-          }
-
-          &.visibility_off {
-            color: red;
+            font-weight: 500;
           }
 
           &.referenced {
-            color: dodgerblue;
+            color: #1e90ff;
+            input {
+              background-color: #8cc6ffaa;
+              color: black;
+            }
           }
 
           &.pinned {
             p {
+              color: white;
               text-decoration: underline;
+              text-underline-offset: 0.2rem;
+            }
+          }
+
+          &.visibility_off {
+            opacity: 0.4;
+          }
+
+          .key_title {
+            pointer-events: none;
+
+            button,
+            mat-icon {
+              opacity: 0 !important;
             }
           }
         }
@@ -150,7 +166,7 @@
             margin-left: 2rem;
 
             &:first-child {
-              background-color: rgb(29, 67, 192);
+              background-color: #1e90ff;
             }
             &:last-child {
               background-color: rgb(29, 192, 78);

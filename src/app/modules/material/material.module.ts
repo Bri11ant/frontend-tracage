@@ -7,7 +7,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
-import {} from '@angular/material/';
+import { MatRadioModule } from '@angular/material/radio';
 import {} from '@angular/material/';
 import {} from '@angular/material/';
 
@@ -19,6 +19,7 @@ const materials = [
   MatTooltipModule,
   MatMenuModule,
   MatDialogModule,
+  MatRadioModule,
 ];
 
 @NgModule({

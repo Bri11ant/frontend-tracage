@@ -8,7 +8,7 @@
 
       <section class="items">
         <div
-          *ngFor="let key of projectData.keys"
+          *ngFor="let key of projectData.keys; let i = index"
           [ngClass]="{
             item: true,
             visibility_off: !key.visible,
@@ -16,7 +16,12 @@
             pinned: key.pin
           }"
         >
-          <div class="label">
+          <div
+            [ngClass]="{
+              label: true,
+              key_title: key.label === 'titre'
+            }"
+          >
             <button
               tabindex="-1"
               mat-icon-button
@@ -25,12 +30,57 @@
             >
               <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-icon class="mat-18 eye-icon">
+
+            <!-- Menu -->
+
+            <mat-menu #menu="matMenu" class="option-menu">
+              <button
+                mat-menu-item
+                (click)="onToggleKeyPin(i)"
+                [disabled]="key.ref.length !== 0"
+                [ngClass]="{ active_item: key.pin }"
+              >
+                <mat-icon class="mat-18">push_pin</mat-icon>
+                <span> {{ key.pin ? "Pinned" : "Pin" }} </span>
+              </button>
+              <button
+                mat-menu-item
+                (click)="onSync(i)"
+                [matTooltip]="key.ref.length ? ' => ' + key.ref : ''"
+                matTooltipClass="ref-tooltip tooltip"
+                matTooltipHideDelay="1s"
+                matTooltipPosition="after"
+                [ngClass]="{ active_item: key.ref.length > 0 }"
+              >
+                <mat-icon class="mat-18">link </mat-icon> <span>Sync</span>
+              </button>
+              <button mat-menu-item (click)="onRemoveKey(i)">
+                <mat-icon class="mat-18">delete </mat-icon> <span>Remove</span>
+              </button>
+            </mat-menu>
+
+            <!-- ---- -->
+            <mat-icon
+              class="mat-18 eye-icon"
+              (click)="onToggleKeyVisibility(i)"
+            >
               {{ key.visible ? "visibility" : "visibility_off" }}
             </mat-icon>
-            <p>{{ key.label }}</p>
+            <p
+              (click)="onToggleKeyVisibility(i)"
+              [matTooltip]="key.ref.length ? ' => ' + key.ref : ''"
+              matTooltipClass="ref-tooltip tooltip"
+              matTooltipHideDelay="1s"
+              matTooltipPosition="after"
+            >
+              {{ key.label }}
+            </p>
           </div>
-          <input type="text" [value]="key.value" />
+          <input
+            type="text"
+            [value]="key.value"
+            [disabled]="!key.visible || key.ref.length !== 0"
+          />
         </div>
       </section>
 
@@ -54,17 +104,3 @@
     </aside>
   </div>
 </div>
-
-<!-- Menu -->
-
-<mat-menu #menu="matMenu" class="option-menu">
-  <button mat-menu-item (click)="(null)">
-    <mat-icon class="mat-18">push_pin</mat-icon> <span>Pin</span>
-  </button>
-  <button mat-menu-item (click)="(null)">
-    <mat-icon class="mat-18">link </mat-icon> <span>Sync</span>
-  </button>
-  <button mat-menu-item (click)="(null)">
-    <mat-icon class="mat-18">delete </mat-icon> <span>Remove</span>
-  </button>
-</mat-menu>

@@ -19,6 +19,7 @@ const keys: KeyModel[] = [
 /* SETTING */
 keys[7].ref = 'titre';
 keys[8].ref = 'titre';
+keys[8].value = 'titre';
 keys[10].visible = false;
 /* ****** */
 

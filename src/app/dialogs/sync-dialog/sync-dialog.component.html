@@ -1,0 +1,27 @@
+<div class="container">
+  <h2>Select a reference</h2>
+
+  <div class="options">
+    <mat-radio-group>
+      <div class="option" (click)="onSelect('')">
+        <mat-radio-button value="" [checked]="!currentRef" color="primary"
+          ><span>none</span>
+        </mat-radio-button>
+      </div>
+
+      <div
+        class="option"
+        *ngFor="let ref of references"
+        (click)="onSelect(ref.id)"
+      >
+        <mat-radio-button
+          [value]="ref.id"
+          color="primary"
+          [checked]="currentRef === ref.id"
+        >
+          <span>{{ ref.label }}</span></mat-radio-button
+        >
+      </div>
+    </mat-radio-group>
+  </div>
+</div>

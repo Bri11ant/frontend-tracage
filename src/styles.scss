@@ -32,6 +32,13 @@ mat-icon:hover {
     button {
       span {
         padding-right: 1rem;
+        font-weight: 500;
+      }
+    }
+
+    .active_item {
+      * {
+        color: #207fdf !important;
       }
     }
   }
@@ -40,4 +47,11 @@ mat-icon:hover {
 /* DIALOG */
 mat-dialog-container {
   border-radius: 1rem !important;
+}
+
+/* TOOLTIP */
+.tooltip {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
 }

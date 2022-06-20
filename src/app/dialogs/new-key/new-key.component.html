@@ -1,14 +1,30 @@
 <div class="container">
   <h2>New key</h2>
-  <input type="text" />
+  <input type="text" #inputRef (change)="onInputChange(inputRef.value)" />
 
   <div class="options">
-    <div class="option">
-      <mat-icon class="mat-18">push_pin</mat-icon> <span>Pin</span>
-    </div>
-    <div class="option">
+    <button
+      mat-button
+      [ngClass]="{
+        option: true,
+        pinned: pin
+      }"
+      (click)="pin = !pin"
+      [disabled]="ref.length > 0"
+    >
+      <mat-icon class="mat-18">push_pin</mat-icon>
+      <span>{{ pin ? "Pinned" : "Pin" }}</span>
+    </button>
+    <button
+      mat-button
+      [ngClass]="{
+        option: true,
+        referenced: ref.length > 0
+      }"
+      (click)="onSync()"
+    >
       <mat-icon class="mat-18">link</mat-icon> <span>Sync</span>
-    </div>
+    </button>
   </div>
 
   <button

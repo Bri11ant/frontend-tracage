@@ -31,10 +31,16 @@
       mat-icon {
         margin-right: 0.5rem;
       }
+
+      &.pinned,
+      &.referenced {
+        color: #1e90ff;
+      }
     }
   }
 
-  button {
+  button[color="primary"] {
     border-radius: 1.5rem;
+    background-color: #1e90ff !important;
   }
 }
