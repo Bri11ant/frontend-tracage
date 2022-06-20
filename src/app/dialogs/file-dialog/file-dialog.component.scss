@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #2d2d2d;
+
+  h2 {
+    color: rgb(192, 146, 29);
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+
+  .options {
+    .option {
+      border-radius: 1rem;
+      padding: 0 1.5rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      mat-icon,
+      span {
+        margin-right: 0.5rem;
+        font-weight: 500;
+      }
+    }
+  }
+}

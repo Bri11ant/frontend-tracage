@@ -10,9 +10,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './pages/home/home.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NewKeyComponent } from './dialogs/new-key/new-key.component';
+import { FileDialogComponent } from './dialogs/file-dialog/file-dialog.component';
 
 @NgModule({
-  declarations: [AppComponent, SandboxComponent, HomeComponent, NewKeyComponent],
+  declarations: [AppComponent, SandboxComponent, HomeComponent, NewKeyComponent, FileDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -10,7 +10,6 @@ export class NewKeyComponent implements OnInit {
   constructor(private dialog: MatDialogRef<NewKeyComponent>) {}
 
   ngOnInit(): void {
-    this.dialog.disableClose = true;
     window.addEventListener('keydown', ($ev) => {
       if ($ev.code === 'Enter') {
         this.onSubmit();

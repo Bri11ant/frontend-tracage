@@ -8,7 +8,7 @@
   background-image: linear-gradient(
     to left,
     rgb(92, 146, 182),
-    rgb(85, 175, 132)
+    rgb(119, 85, 175)
   );
 
   .container {
@@ -63,12 +63,15 @@
           width: 100%;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 1rem;
+          margin-bottom: 0.3rem;
 
           input {
-            background-color: whitesmoke;
             color: #222;
-            border: 1rem;
+            border: none;
+            outline: none;
+            background-color: whitesmoke;
+            padding: 0.2rem 1rem;
+            border-radius: 1rem;
           }
 
           .label {
@@ -103,6 +106,20 @@
           }
           input {
             width: 40%;
+          }
+
+          &.visibility_off {
+            color: red;
+          }
+
+          &.referenced {
+            color: dodgerblue;
+          }
+
+          &.pinned {
+            p {
+              text-decoration: underline;
+            }
           }
         }
       }
