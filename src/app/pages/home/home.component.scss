@@ -13,7 +13,7 @@
 
   .container {
     height: 90%;
-    width: 1250px;
+    width: 1150px;
     border-radius: 1rem;
     background-color: #2d2d2d;
     color: whitesmoke;
@@ -64,6 +64,12 @@
           align-items: center;
           justify-content: space-between;
           margin-bottom: 1rem;
+
+          input {
+            background-color: whitesmoke;
+            color: #222;
+            border: 1rem;
+          }
 
           .label {
             display: flex;
@@ -150,6 +156,7 @@
         width: calc(100% - 4rem);
         // height: calc(100% - 4rem);
         background-color: #222;
+        color: whitesmoke;
         resize: none;
         outline: none;
         border: none;

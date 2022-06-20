@@ -9,7 +9,13 @@
       <section class="items">
         <div class="item" *ngFor="let i of [1, 2, 3, 4, 5, 6, 7]">
           <div class="label">
-            <mat-icon class="mat-18">more_vert</mat-icon>
+            <button
+              mat-icon-button
+              [matMenuTriggerFor]="menu"
+              aria-label="More tool"
+            >
+              <mat-icon>more_vert</mat-icon>
+            </button>
             <mat-icon class="mat-18 eye-icon">
               {{ i % 2 === 0 ? "visibility" : "visibility_off" }}
             </mat-icon>
@@ -24,7 +30,7 @@
           <button>File</button>
         </div>
         <div class="right-controls">
-          <button>New key</button>
+          <button (click)="onNewKey()">New key</button>
           <button>Submit</button>
         </div>
       </div>
@@ -39,3 +45,17 @@
     </aside>
   </div>
 </div>
+
+<!-- Menu -->
+
+<mat-menu #menu="matMenu" class="option-menu">
+  <button mat-menu-item (click)="(null)">
+    <mat-icon class="mat-18">push_pin</mat-icon> <span>Pin</span>
+  </button>
+  <button mat-menu-item (click)="(null)">
+    <mat-icon class="mat-18">link </mat-icon> <span>Sync</span>
+  </button>
+  <button mat-menu-item (click)="(null)">
+    <mat-icon class="mat-18">delete </mat-icon> <span>Remove</span>
+  </button>
+</mat-menu>

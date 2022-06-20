@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: #2d2d2d;
+
+  h2 {
+    color: rgb(192, 146, 29);
+    font-weight: 500;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    background-color: rgb(255, 243, 177);
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+  }
+
+  .options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 1rem 0;
+
+    .option {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      mat-icon {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
+  button {
+    border-radius: 1.5rem;
+  }
+}

@@ -13,8 +13,31 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-/* MY CONFIGS */
+/*
+*
+MY CONFIGS
+*
+*/
 
+/* ICONS */
 mat-icon:hover {
   cursor: pointer;
+}
+
+/* MENU */
+.option-menu {
+  &.mat-menu-panel {
+    border-radius: 1rem;
+
+    button {
+      span {
+        padding-right: 1rem;
+      }
+    }
+  }
+}
+
+/* DIALOG */
+mat-dialog-container {
+  border-radius: 1rem !important;
 }
