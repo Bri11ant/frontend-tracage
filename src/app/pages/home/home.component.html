@@ -108,12 +108,19 @@
     </section>
 
     <aside class="right-side">
-      <textarea name="" id="JSON-output">{{
-        projectData.json.trim()
-      }}</textarea>
+      <textarea
+        (keyup)="outputManuallyEdited = true"
+        name=""
+        id="JSON-output"
+        >{{ projectData.json.trim() }}</textarea
+      >
       <div class="controls">
-        <button (click)="onCancel()">Cancel</button>
-        <button (click)="onSave()">Save</button>
+        <button (click)="onCancel()" [disabled]="!outputManuallyEdited">
+          Cancel
+        </button>
+        <button (click)="onSave()" [disabled]="!outputManuallyEdited">
+          Save
+        </button>
       </div>
     </aside>
   </div>

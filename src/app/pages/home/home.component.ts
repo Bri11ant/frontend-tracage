@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
   projectData = new ProjectModel('', '{ }');
   references: string[] = [];
 
+  outputManuallyEdited = false;
+
   constructor(private dialog: MatDialog, private homeService: HomeService) {}
 
   ngOnInit(): void {
@@ -46,6 +48,12 @@ export class HomeComponent implements OnInit {
         }
       }
       this.dialog.closeAll();
+
+      setTimeout(() => {
+        this.getKeyInputRef(
+          this.projectData.keys[this.projectData.keys.length - 1].id
+        ).focus();
+      }, 200);
     });
   }
 
@@ -131,12 +139,7 @@ export class HomeComponent implements OnInit {
     const titleRef = this.getKeyInputRef('titre');
     if (titleRef && titleRef.value.length > 0) {
       this.projectData.json = this.homeService.printJSON();
-      const outputRef = document.querySelector(
-        '#JSON-output'
-      ) as HTMLTextAreaElement;
-      if (outputRef) {
-        outputRef.value = this.projectData.json;
-      }
+      this.refreshOutput();
     } else {
       alert('"title" key can\'t be empty!');
     }
@@ -154,11 +157,21 @@ export class HomeComponent implements OnInit {
   }
 
   onSave() {
-    //
+    const outputRef = document.querySelector(
+      '#JSON-output'
+    ) as HTMLTextAreaElement;
+    if (outputRef) {
+      this.projectData.json = outputRef.value;
+      this.homeService.projectData.json = outputRef.value;
+    }
+    this.outputManuallyEdited = false;
+    this.getKeyInputRef('titre').focus();
   }
 
   onCancel() {
-    //
+    this.refreshOutput();
+    this.outputManuallyEdited = false;
+    this.getKeyInputRef('titre').focus();
   }
 
   getKeyInputRef(id: string) {
@@ -168,5 +181,14 @@ export class HomeComponent implements OnInit {
     // console.log('Ref:', keyRef);
 
     return keyRef;
+  }
+
+  refreshOutput() {
+    const outputRef = document.querySelector(
+      '#JSON-output'
+    ) as HTMLTextAreaElement;
+    if (outputRef) {
+      outputRef.value = this.projectData.json;
+    }
   }
 }
