@@ -24,21 +24,28 @@ export class HomeService {
   }
 
   printJSON() {
+    const keys = this.projectData.keys.filter((k) => k.visible);
     let result = `{
-    "${this.projectData.keys[0].value.trim()} :" {
+    "${keys[0].value.trim().replace(',', '.')} :" {
         `;
-    this.projectData.keys.forEach((k, index) => {
+    keys.forEach((k, index) => {
       if (index !== 0) {
-        result += `"${k.label.trim()}": "${k.value.trim()}"${
-          index === this.projectData.keys.length - 1 ? '' : ','
+        result += `"${k.label.trim()}": "${k.value.trim().replace(',', '.')}"${
+          index === keys.length - 1
+            ? `
+    }`
+            : ','
         }
         `;
       }
+      if (keys.length === 1) {
+        result += `
+    }`;
+      }
     });
     result += `
-    }
 }`;
-    this.projectData.keys.forEach((k) => {
+    keys.forEach((k) => {
       // result += k.
     });
 
