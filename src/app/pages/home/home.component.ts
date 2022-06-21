@@ -3,7 +3,7 @@ import { ProjectModel, KeyModel } from './../../models/models';
 import { HomeService } from './home.service';
 import { FileDialogComponent } from './../../dialogs/file-dialog/file-dialog.component';
 import { NewKeyComponent } from './../../dialogs/new-key/new-key.component';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -12,7 +12,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   projectData = new ProjectModel('', '{ }');
   references: string[] = [];
 
@@ -24,6 +24,13 @@ export class HomeComponent implements OnInit {
     if (this.homeService.projectData) {
       this.projectData = this.homeService.projectData;
       this.references = this.homeService.references;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    const titreRef = this.getKeyInputRef('titre');
+    if (titreRef) {
+      titreRef.focus();
     }
   }
 
@@ -137,7 +144,7 @@ export class HomeComponent implements OnInit {
 
   onSubmit() {
     const titleRef = this.getKeyInputRef('titre');
-    if (titleRef && titleRef.value.length > 0) {
+    if (titleRef && titleRef.value.trim().length > 0) {
       this.refreshOutput();
       this.projectData.json = this.homeService.printJSON();
       this.refreshOutput();

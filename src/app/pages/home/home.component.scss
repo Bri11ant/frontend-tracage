@@ -109,6 +109,13 @@
           input {
             width: 40%;
             font-weight: 500;
+            outline: 4px solid transparent;
+            transition: 0.4s;
+
+            &:focus {
+              outline: 2px solid rgb(192, 146, 29);
+              background-color: #fff3b1;
+            }
           }
 
           &.referenced {
@@ -172,6 +179,14 @@
             }
             &:last-child {
               background-color: rgb(29, 192, 78);
+              outline: 2px solid transparent;
+              transition: 0.4s;
+
+              &:focus {
+                outline: 1px solid #b22222;
+                color: white;
+                background-color: #b22222;
+              }
             }
           }
         }
