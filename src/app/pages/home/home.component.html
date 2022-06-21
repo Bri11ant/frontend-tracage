@@ -6,15 +6,21 @@
         <h2>{{ projectData.title }}</h2>
       </header>
 
-      <section class="items">
+      <section
+        class="items"
+        cdkDropList
+        (cdkDropListDropped)="onReorder($event)"
+      >
         <div
           *ngFor="let key of projectData.keys; let i = index"
+          [class]="key.id + '-ref'"
           [ngClass]="{
             item: true,
             visibility_off: !key.visible,
             referenced: key.ref.length !== 0,
             pinned: key.pin
           }"
+          cdkDrag
         >
           <div
             [ngClass]="{
@@ -102,10 +108,12 @@
     </section>
 
     <aside class="right-side">
-      <textarea name="" id="">{{ projectData.json.trim() }}</textarea>
+      <textarea name="" id="JSON-output">{{
+        projectData.json.trim()
+      }}</textarea>
       <div class="controls">
-        <button>Cancel</button>
-        <button>Save</button>
+        <button (click)="onCancel()">Cancel</button>
+        <button (click)="onSave()">Save</button>
       </div>
     </aside>
   </div>

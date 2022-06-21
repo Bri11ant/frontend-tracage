@@ -55,3 +55,93 @@ mat-dialog-container {
   font-size: 0.9rem;
   font-weight: 500;
 }
+
+/* DRAG & DROP */
+.cdk-drag-preview {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(245, 245, 245, 0.911);
+  font-weight: 500;
+  // margin-bottom: 0.1rem;
+
+  input {
+    color: #222;
+    border: none;
+    outline: none;
+    background-color: whitesmoke;
+    padding: 0.2rem 1rem;
+    border-radius: 1rem;
+    font-weight: 600 !important;
+    // font-family: "Courier New", Courier, monospace;
+  }
+
+  .label {
+    display: flex;
+    // border: 1px solid yellow;
+    align-items: center;
+
+    .eye-icon {
+      margin-left: 1rem;
+      margin-right: 1.5rem;
+      transform: scale(0.9);
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    mat-icon {
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    p {
+      position: relative;
+      top: 0.4rem;
+      cursor: pointer;
+    }
+  }
+  input {
+    width: 40%;
+    font-weight: 500;
+  }
+
+  &.referenced {
+    color: #1e90ff;
+    input {
+      background-color: #8cc6ffaa;
+      color: black;
+    }
+  }
+
+  &.pinned {
+    p {
+      color: white;
+      text-decoration: underline;
+      text-underline-offset: 0.2rem;
+    }
+  }
+
+  &.visibility_off {
+    opacity: 0.4;
+  }
+
+  .key_title {
+    pointer-events: none;
+
+    button,
+    mat-icon {
+      opacity: 0 !important;
+    }
+  }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}

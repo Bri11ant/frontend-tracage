@@ -50,6 +50,9 @@ export class HomeService {
     });
 
     this.projectData.json = result;
+
+    console.log('result:', result);
+
     return result;
   }
 }

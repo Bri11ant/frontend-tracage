@@ -5,6 +5,7 @@ import { FileDialogComponent } from './../../dialogs/file-dialog/file-dialog.com
 import { NewKeyComponent } from './../../dialogs/new-key/new-key.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-home',
@@ -127,13 +128,45 @@ export class HomeComponent implements OnInit {
   }
 
   onSubmit() {
-    const titleRef = document.querySelector(
-      '.key_title_input'
-    ) as HTMLInputElement;
+    const titleRef = this.getKeyInputRef('titre');
     if (titleRef && titleRef.value.length > 0) {
       this.projectData.json = this.homeService.printJSON();
+      const outputRef = document.querySelector(
+        '#JSON-output'
+      ) as HTMLTextAreaElement;
+      if (outputRef) {
+        outputRef.value = this.projectData.json;
+      }
     } else {
       alert('"title" key can\'t be empty!');
     }
+    titleRef.focus();
+  }
+
+  onReorder(props: CdkDragDrop<string[]>) {
+    const newIndex = props.currentIndex;
+    const prevIndex = props.previousIndex;
+    if (newIndex === prevIndex || newIndex * prevIndex === 0) {
+      return;
+    }
+    moveItemInArray(this.projectData.keys, prevIndex, newIndex);
+    this.homeService.projectData.keys = this.projectData.keys;
+  }
+
+  onSave() {
+    //
+  }
+
+  onCancel() {
+    //
+  }
+
+  getKeyInputRef(id: string) {
+    const keyRef = document.querySelector(
+      `.${id}-ref  input`
+    ) as HTMLInputElement;
+    // console.log('Ref:', keyRef);
+
+    return keyRef;
   }
 }
