@@ -28,10 +28,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const titreRef = this.getKeyInputRef('titre');
+    const titreRef = this.getKeyInputRef(0);
     if (titreRef) {
       titreRef.focus();
     }
+    this.initShortcut();
   }
 
   onNewKey() {
@@ -57,10 +58,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.dialog.closeAll();
 
       setTimeout(() => {
-        this.getKeyInputRef(
-          this.projectData.keys[this.projectData.keys.length - 1].id
-        ).focus();
-      }, 200);
+        this.getKeyInputRef(this.projectData.keys.length - 1)?.focus();
+      }, 100);
     });
   }
 
@@ -69,12 +68,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   onToggleKeyVisibility(index: number) {
+    if (index === 0) {
+      return;
+    }
     this.projectData.keys[index].visible =
       !this.projectData.keys[index].visible;
     this.homeService.projectData.keys[index] = this.projectData.keys[index];
+
+    const ref = this.getKeyInputRef(index);
+    if (ref && ref.disabled) {
+      setTimeout(() => {
+        ref.focus();
+      }, 100);
+    }
   }
 
   onToggleKeyPin(index: number) {
+    if (index === 0) {
+      return;
+    }
     this.projectData.keys[index].pin = !this.projectData.keys[index].pin;
 
     if (!this.projectData.keys[index].pin) {
@@ -88,6 +100,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.homeService.references = this.references;
     this.homeService.projectData.keys[index] = this.projectData.keys[index];
+
+    const ref = this.getKeyInputRef(index);
+    if (ref) {
+      setTimeout(() => {
+        ref.focus();
+      }, 100);
+    }
   }
 
   onRemoveKey(index: number) {
@@ -142,8 +161,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  onInputKeyup($ev: KeyboardEvent, index: number) {
+    if ($ev.code === 'Enter') {
+      if (
+        index === this.projectData.keys.length - 1 ||
+        $ev.shiftKey ||
+        $ev.ctrlKey
+      ) {
+        this.onSubmit();
+        return;
+      }
+      this.nextInputRef(index);
+    } else if ($ev.code === 'Space') {
+      if (($ev.shiftKey || $ev.ctrlKey) && index !== 0) {
+        this.onToggleKeyVisibility(index);
+        this.nextInputRef(index);
+      }
+    }
+  }
+
   onSubmit() {
-    const titleRef = this.getKeyInputRef('titre');
+    const titleRef = this.getKeyInputRef(0);
     if (titleRef && titleRef.value.trim().length > 0) {
       this.refreshOutput();
       this.projectData.json = this.homeService.printJSON();
@@ -151,7 +189,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     } else {
       alert('"title" key can\'t be empty!');
     }
-    titleRef.focus();
+    const outputRef = document.querySelector(
+      '#JSON-output'
+    ) as HTMLTextAreaElement;
+    outputRef?.scrollTo({
+      top: outputRef.scrollHeight,
+    });
+    setTimeout(() => {
+      titleRef?.focus();
+    }, 100);
   }
 
   onReorder(props: CdkDragDrop<string[]>) {
@@ -173,20 +219,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.homeService.projectData.json = outputRef.value;
     }
     this.outputManuallyEdited = false;
-    this.getKeyInputRef('titre').focus();
+    this.getKeyInputRef(0)?.focus();
   }
 
   onCancel() {
     this.refreshOutput();
     this.outputManuallyEdited = false;
-    this.getKeyInputRef('titre').focus();
+    this.getKeyInputRef(0)?.focus();
   }
 
-  getKeyInputRef(id: string) {
+  getKeyInputRef(index: number) {
+    if (!this.projectData.keys[index]) {
+      return undefined;
+    }
+    const id = this.projectData.keys[index].id;
     const keyRef = document.querySelector(
       `.${id}-ref  input`
     ) as HTMLInputElement;
-    // console.log('Ref:', keyRef);
 
     return keyRef;
   }
@@ -198,5 +247,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (outputRef) {
       outputRef.value = this.projectData.json;
     }
+  }
+
+  nextInputRef(index: number) {
+    if (index === this.projectData.keys.length - 1) {
+      (document.querySelector('#submitToJSON') as HTMLButtonElement)?.focus();
+      return;
+    }
+    const keyRef = this.getKeyInputRef(index + 1);
+
+    if (keyRef) {
+      if (keyRef.disabled) {
+        this.nextInputRef(index + 1);
+        return;
+      }
+      keyRef.focus();
+    }
+  }
+
+  initShortcut() {
+    document.addEventListener('keyup', ($ev) => {
+      console.log('code:', $ev.code);
+    });
   }
 }

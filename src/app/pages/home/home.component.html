@@ -83,6 +83,7 @@
             </p>
           </div>
           <input
+            (keyup)="onInputKeyup($event, i)"
             [ngClass]="{
               key_title_input: key.label === 'titre'
             }"
@@ -102,7 +103,7 @@
         </div>
         <div class="right-controls">
           <button (click)="onNewKey()" tabindex="-1">New key</button>
-          <button (click)="onSubmit()">Submit</button>
+          <button (click)="onSubmit()" id="submitToJSON">Submit</button>
         </div>
       </div>
     </section>
