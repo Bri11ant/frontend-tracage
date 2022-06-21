@@ -7,10 +7,11 @@ import { Injectable } from '@angular/core';
 })
 export class HomeService {
   // projectData = DATA_SAMPLE_PROJECT;
-  projectData = new ProjectModel('', '{ }');
+  projectData: ProjectModel;
   references: string[] = [];
 
   constructor() {
+    this.projectData = new ProjectModel('', '{ }');
     this.refreshReferences();
   }
 

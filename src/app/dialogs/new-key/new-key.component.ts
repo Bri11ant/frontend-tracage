@@ -23,14 +23,25 @@ export class NewKeyComponent implements OnInit {
   ngOnInit(): void {
     window.addEventListener('keydown', ($ev) => {
       if ($ev.code === 'Enter') {
-        this.onSubmit();
+        if (this.label.length > 0) {
+          this.onSubmit();
+        } else {
+          const submitRef = document.querySelector(
+            'button[color="primary"]'
+          ) as HTMLButtonElement;
+          if (submitRef) {
+            setTimeout(() => {
+              submitRef.click();
+            }, 200);
+          }
+        }
       }
     });
   }
 
   onSubmit() {
     if (this.label.length < 1) {
-      alert("Input can't be empty!");
+      // alert("Input can't be empty!");
       return;
     }
 

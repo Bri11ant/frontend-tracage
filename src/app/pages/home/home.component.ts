@@ -30,6 +30,11 @@ export class HomeComponent implements OnInit {
       if (data) {
         this.projectData.keys.push(data.newKey);
         this.homeService.projectData.keys = this.projectData.keys;
+
+        if (data.newKey.pin) {
+          this.references.push(data.newKey.id);
+          this.homeService.references = this.references;
+        }
       }
     });
   }
