@@ -29,6 +29,7 @@
             }"
           >
             <button
+              id="menu-trigger"
               tabindex="-1"
               mat-icon-button
               [matMenuTriggerFor]="menu"
@@ -48,6 +49,9 @@
               >
                 <mat-icon class="mat-18">push_pin</mat-icon>
                 <span> {{ key.pin ? "Pinned" : "Pin" }} </span>
+              </button>
+              <button mat-menu-item (click)="onRename(i)">
+                <mat-icon class="mat-18">edit </mat-icon> <span>Rename</span>
               </button>
               <button
                 mat-menu-item

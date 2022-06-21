@@ -12,9 +12,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NewKeyComponent } from './dialogs/new-key/new-key.component';
 import { FileDialogComponent } from './dialogs/file-dialog/file-dialog.component';
 import { SyncDialogComponent } from './dialogs/sync-dialog/sync-dialog.component';
+import { RenameKeyComponent } from './dialogs/rename-key/rename-key.component';
 
 @NgModule({
-  declarations: [AppComponent, SandboxComponent, HomeComponent, NewKeyComponent, FileDialogComponent, SyncDialogComponent],
+  declarations: [AppComponent, SandboxComponent, HomeComponent, NewKeyComponent, FileDialogComponent, SyncDialogComponent, RenameKeyComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

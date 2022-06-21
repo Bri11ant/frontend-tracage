@@ -1,0 +1,13 @@
+<div class="container">
+  <h2>Rename key</h2>
+  <input type="text" #inputRef (keyup)="onInputChange(inputRef)" />
+
+  <button
+    (click)="onSubmit()"
+    mat-raised-button
+    (click)="(null)"
+    color="primary"
+  >
+    Rename
+  </button>
+</div>

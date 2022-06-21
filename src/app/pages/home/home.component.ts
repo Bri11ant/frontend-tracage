@@ -1,3 +1,4 @@
+import { RenameKeyComponent } from './../../dialogs/rename-key/rename-key.component';
 import { SyncDialogComponent } from './../../dialogs/sync-dialog/sync-dialog.component';
 import { ProjectModel, KeyModel } from './../../models/models';
 import { HomeService } from './home.service';
@@ -61,6 +62,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.getKeyInputRef(this.projectData.keys.length - 1)?.focus();
       }, 100);
     });
+  }
+
+  onRename(index: number) {
+    if (index === 0) {
+      return;
+    }
+    const _dialogRef = this.dialog.open(RenameKeyComponent, {
+      data: { index },
+    });
+
+    // _dialogRef.afterClosed().subscribe((data) => {
+    //   if (!data) {
+    //     return;
+    //   }
+    //   this.projectData.keys[index].ref = data.ref;
+
+    //   if (data.ref) {
+    //     this.projectData.keys[index].pin = false;
+    //     const _index = this.references.findIndex(
+    //       (_ref) => _ref === this.projectData.keys[index].id
+    //     );
+    //     this.references.splice(_index, 1);
+    //     this.homeService.references = this.references;
+    //   }
+    //   this.homeService.projectData.keys[index] = this.projectData.keys[index];
+    // });
   }
 
   onFile() {
@@ -180,6 +207,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     } else if ($ev.altKey) {
       if ($ev.code.toLowerCase() === 'keyp') {
         this.onToggleKeyPin(index);
+      } else if ($ev.code.toLowerCase() === 'keyr') {
+        // const menuRef = document.querySelector(
+        //   '#menu-trigger'
+        // ) as HTMLButtonElement;
+        // menuRef?.click();
+        this.onRename(index);
       }
     }
   }
