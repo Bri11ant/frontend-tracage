@@ -24,10 +24,17 @@ export class HomeService {
   }
 
   printJSON() {
+    let result = this.projectData.json;
     const keys = this.projectData.keys.filter((k) => k.visible);
-    let result = `{
+
+    if (result === '{ }') {
+      result = `{
     "${keys[0].value.trim().replace(',', '.')} :" {
         `;
+    } else {
+      result = this.cropResult(result, keys[0].value.trim().replace(',', '.'));
+    }
+
     keys.forEach((k, index) => {
       if (index !== 0) {
         result += `"${k.label.trim()}": "${k.value.trim().replace(',', '.')}"${
@@ -45,12 +52,28 @@ export class HomeService {
     });
     result += `
 }`;
-    keys.forEach((k) => {
-      // result += k.
-    });
 
     this.projectData.json = result;
 
     return result;
+  }
+
+  cropResult(result: string, header: string) {
+    let lastBraceIndex = 0;
+    let pingBrace = 0;
+    for (let i = 1; i < result.length; i++) {
+      if (result.charAt(result.length - i) === '}') {
+        pingBrace++;
+        if (pingBrace === 2) {
+          lastBraceIndex = result.length - i;
+        }
+      }
+    }
+    return (
+      result.slice(0, lastBraceIndex + 1) +
+      `,
+    "${header} :" {
+        `
+    );
   }
 }

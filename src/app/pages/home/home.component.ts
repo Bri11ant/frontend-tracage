@@ -138,6 +138,7 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     const titleRef = this.getKeyInputRef('titre');
     if (titleRef && titleRef.value.length > 0) {
+      this.refreshOutput();
       this.projectData.json = this.homeService.printJSON();
       this.refreshOutput();
     } else {
