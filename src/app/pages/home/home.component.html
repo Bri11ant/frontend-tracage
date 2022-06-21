@@ -77,11 +77,15 @@
             </p>
           </div>
           <input
+            [ngClass]="{
+              key_title_input: key.label === 'titre'
+            }"
             type="text"
             [value]="key.value"
             [disabled]="!key.visible || key.ref.length !== 0"
             #inputRef
-            (change)="onInputChange(key, inputRef.value)"
+            (keyup)="onInputChange(key, inputRef.value)"
+            (keydown)="onInputChange(key, inputRef.value)"
           />
         </div>
       </section>
@@ -92,7 +96,7 @@
         </div>
         <div class="right-controls">
           <button (click)="onNewKey()">New key</button>
-          <button>Submit</button>
+          <button (click)="onSubmit()">Submit</button>
         </div>
       </div>
     </section>

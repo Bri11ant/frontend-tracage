@@ -22,4 +22,27 @@ export class HomeService {
 
     return this.references;
   }
+
+  printJSON() {
+    let result = `{
+    "${this.projectData.keys[0].value.trim()} :" {
+        `;
+    this.projectData.keys.forEach((k, index) => {
+      if (index !== 0) {
+        result += `"${k.label.trim()}": "${k.value.trim()}"${
+          index === this.projectData.keys.length - 1 ? '' : ','
+        }
+        `;
+      }
+    });
+    result += `
+    }
+}`;
+    this.projectData.keys.forEach((k) => {
+      // result += k.
+    });
+
+    this.projectData.json = result;
+    return result;
+  }
 }

@@ -13,6 +13,7 @@ export class NewKeyComponent implements OnInit {
   label = '';
   pin = false;
   ref = '';
+  keys: KeyModel[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<NewKeyComponent>,
@@ -21,19 +22,21 @@ export class NewKeyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.keys = this.homeService.projectData.keys;
+
     window.addEventListener('keydown', ($ev) => {
       if ($ev.code === 'Enter') {
         if (this.label.length > 0) {
           this.onSubmit();
-        } else {
-          const submitRef = document.querySelector(
-            'button[color="primary"]'
-          ) as HTMLButtonElement;
-          if (submitRef) {
-            setTimeout(() => {
-              submitRef.click();
-            }, 200);
-          }
+          // } else {
+          //   const submitRef = document.querySelector(
+          //     'button[color="primary"]'
+          //   ) as HTMLButtonElement;
+          //   if (submitRef) {
+          //     setTimeout(() => {
+          //       submitRef.click();
+          //     }, 200);
+          //   }
         }
       }
     });
@@ -45,14 +48,32 @@ export class NewKeyComponent implements OnInit {
       return;
     }
 
-    const newKey = new KeyModel(this.label, this.pin);
+    if (
+      this.keys.findIndex(
+        (k) => k.label.toLowerCase() === this.label.toLowerCase()
+      ) > -1
+    ) {
+      // alert('Key exists already!');
+      return;
+    }
+
+    const newKey = new KeyModel(this.label.trim(), this.pin);
     newKey.ref = this.ref;
 
     this.dialogRef.close({ newKey });
   }
 
-  onInputChange(input: string) {
-    this.label = input;
+  onInputChange(elementRef: HTMLInputElement) {
+    this.label = elementRef.value;
+    const found =
+      this.keys.findIndex(
+        (k) => k.label.toLowerCase() === this.label.toLowerCase()
+      ) > -1;
+    if (found) {
+      elementRef.style.outline = '2px solid #b22222';
+    } else {
+      elementRef.style.outline = '2px solid #b2222200';
+    }
   }
 
   onSync() {

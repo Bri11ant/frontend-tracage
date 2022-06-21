@@ -1,6 +1,6 @@
 <div class="container">
   <h2>New key</h2>
-  <input type="text" #inputRef (change)="onInputChange(inputRef.value)" />
+  <input type="text" #inputRef (keyup)="onInputChange(inputRef)" />
 
   <div class="options">
     <button

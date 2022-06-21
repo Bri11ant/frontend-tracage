@@ -28,6 +28,14 @@ export class HomeComponent implements OnInit {
     const newKeyRef = this.dialog.open(NewKeyComponent);
     newKeyRef.afterClosed().subscribe((data) => {
       if (data) {
+        if (data.newKey.ref.length > 0) {
+          const newKeyValue = this.projectData.keys.find(
+            (k) => k.id === data.newKey.ref
+          )?.value;
+          if (newKeyValue) {
+            data.newKey.value = newKeyValue.trim();
+          }
+        }
         this.projectData.keys.push(data.newKey);
         this.homeService.projectData.keys = this.projectData.keys;
 
@@ -112,6 +120,20 @@ export class HomeComponent implements OnInit {
       if (k.ref === key.id) {
         k.value = value;
       }
+      if (k.id === key.id) {
+        k.value = value;
+      }
     });
+  }
+
+  onSubmit() {
+    const titleRef = document.querySelector(
+      '.key_title_input'
+    ) as HTMLInputElement;
+    if (titleRef && titleRef.value.length > 0) {
+      this.projectData.json = this.homeService.printJSON();
+    } else {
+      alert('"title" key can\'t be empty!');
+    }
   }
 }
