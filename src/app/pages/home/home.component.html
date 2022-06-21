@@ -80,6 +80,8 @@
             type="text"
             [value]="key.value"
             [disabled]="!key.visible || key.ref.length !== 0"
+            #inputRef
+            (change)="onInputChange(key, inputRef.value)"
           />
         </div>
       </section>

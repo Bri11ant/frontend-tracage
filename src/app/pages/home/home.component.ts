@@ -1,5 +1,5 @@
 import { SyncDialogComponent } from './../../dialogs/sync-dialog/sync-dialog.component';
-import { ProjectModel } from './../../models/models';
+import { ProjectModel, KeyModel } from './../../models/models';
 import { HomeService } from './home.service';
 import { FileDialogComponent } from './../../dialogs/file-dialog/file-dialog.component';
 import { NewKeyComponent } from './../../dialogs/new-key/new-key.component';
@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
           this.homeService.references = this.references;
         }
       }
+      this.dialog.closeAll();
     });
   }
 
@@ -103,6 +104,14 @@ export class HomeComponent implements OnInit {
         this.homeService.references = this.references;
       }
       this.homeService.projectData.keys[index] = this.projectData.keys[index];
+    });
+  }
+
+  onInputChange(key: KeyModel, value: string) {
+    this.projectData.keys.forEach((k) => {
+      if (k.ref === key.id) {
+        k.value = value;
+      }
     });
   }
 }
