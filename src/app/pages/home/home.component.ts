@@ -177,6 +177,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.onToggleKeyVisibility(index);
         this.nextInputRef(index);
       }
+    } else if ($ev.altKey) {
+      if ($ev.code.toLowerCase() === 'keyp') {
+        this.onToggleKeyPin(index);
+      }
     }
   }
 
@@ -215,8 +219,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       '#JSON-output'
     ) as HTMLTextAreaElement;
     if (outputRef) {
-      this.projectData.json = outputRef.value;
-      this.homeService.projectData.json = outputRef.value;
+      this.projectData.json = outputRef.value.trim();
+      this.homeService.projectData.json = outputRef.value.trim();
     }
     this.outputManuallyEdited = false;
     this.getKeyInputRef(0)?.focus();
@@ -267,7 +271,26 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   initShortcut() {
     document.addEventListener('keyup', ($ev) => {
-      console.log('code:', $ev.code);
+      if ($ev.altKey) {
+        switch ($ev.code.toLowerCase()) {
+          case 'keyo':
+            this.onFile();
+            break;
+
+          case 'keyn':
+            this.onNewKey();
+            break;
+
+          case 'keys':
+            this.onSave();
+            break;
+
+          default:
+            break;
+        }
+      }
+      /* PREVIEW */
+      // console.log('code:', $ev.code);
     });
   }
 }
