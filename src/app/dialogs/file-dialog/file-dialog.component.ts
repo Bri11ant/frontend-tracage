@@ -64,4 +64,20 @@ export class FileDialogComponent implements OnInit, AfterViewInit {
   onGenerateJSON() {
     this.dialog.close({ action: 'generate-JSON' });
   }
+
+  onToggleInput() {
+    this.newProjectField = !this.newProjectField;
+    setTimeout(() => {
+      if (this.newProjectField) {
+        const _ref = document.querySelector(
+          '.new-project-field'
+        ) as HTMLDivElement | null;
+        if (_ref) {
+          _ref.querySelector('input')?.focus();
+          _ref.style.height = 'inherit';
+          _ref.style.opacity = '1';
+        }
+      }
+    }, 100);
+  }
 }

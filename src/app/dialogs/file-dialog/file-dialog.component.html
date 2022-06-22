@@ -2,11 +2,7 @@
   <h2>File manager</h2>
 
   <div class="options">
-    <button
-      mat-button
-      class="option"
-      (click)="newProjectField = !newProjectField"
-    >
+    <button mat-button class="option" (click)="onToggleInput()">
       <mat-icon class="mat-18">library_add</mat-icon> <span>New project</span>
     </button>
     <div class="new-project-field" *ngIf="newProjectField">
