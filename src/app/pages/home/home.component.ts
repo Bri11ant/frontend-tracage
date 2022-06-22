@@ -231,6 +231,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   onReorder(props: CdkDragDrop<string[]>) {
     const newIndex = props.currentIndex;
     const prevIndex = props.previousIndex;
+
+    setTimeout(() => {
+      this.getKeyInputRef(newIndex)?.focus();
+    }, 100);
+
     if (newIndex === prevIndex || newIndex * prevIndex === 0) {
       return;
     }

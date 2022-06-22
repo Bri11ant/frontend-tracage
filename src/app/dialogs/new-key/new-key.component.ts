@@ -3,6 +3,7 @@ import { SyncDialogComponent } from './../sync-dialog/sync-dialog.component';
 import { KeyModel } from './../../models/models';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { generateID } from 'src/app/utility/methods';
 
 @Component({
   selector: 'app-new-key',
@@ -48,7 +49,7 @@ export class NewKeyComponent implements OnInit {
       return;
     }
 
-    let newKeyID = this.label.toLowerCase().replace(' ', '_').trim();
+    let newKeyID = generateID(this.label);
     if (this.keys.findIndex((k) => k.id === newKeyID) > -1) {
       newKeyID += new Date().getTime();
     }

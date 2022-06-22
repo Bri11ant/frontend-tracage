@@ -1,7 +1,7 @@
 import { ProjectModel } from './../../models/models';
 import { DATA_SAMPLE_PROJECT } from './../../data/project.data';
 import { Injectable } from '@angular/core';
-import { replaceAll } from 'src/app/utility/methods';
+import { escapeRegExp } from 'src/app/utility/methods';
 
 @Injectable({
   providedIn: 'root',
@@ -35,25 +35,10 @@ export class HomeService {
       result.trim() === ''
     ) {
       result = `{
-    "${replaceAll(
-      replaceAll(replaceAll(keys[0].value.trim(), '\\', '\\\\'), '"', `\\"`),
-      ',',
-      '.'
-    )}" : {
+    "${escapeRegExp(keys[0].value, 'JSON')}" : {
         `;
     } else {
-      result = this.cropResult(
-        result,
-        replaceAll(
-          replaceAll(
-            replaceAll(keys[0].value.trim(), '\\', '\\\\'),
-            '"',
-            `\\"`
-          ),
-          ',',
-          '.'
-        )
-      );
+      result = this.cropResult(result, escapeRegExp(keys[0].value, 'JSON'));
     }
 
     keys.forEach((k, index) => {
