@@ -1,6 +1,6 @@
 export function escapeRegExp(str: string, _for?: 'JSON') {
   if (_for && _for === 'JSON') {
-    return str.trim().replace(/[.*+?^${}()|[\]\\"]/g, '\\$&'); // $& means the whole matched string
+    return str.trim().replace(/[\\"]/g, '\\$&'); // $& means the whole matched string
   }
   return str.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
