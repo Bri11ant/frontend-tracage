@@ -49,14 +49,14 @@ export class FileDialogComponent implements OnInit, AfterViewInit {
     const fileData$ = readFileAsText(file);
     fileData$.subscribe((data) => {
       const title = file.name.split('.json')[0].trim();
-      this.homeService.projectData = new ProjectModel(title, data);
+      this.homeService.createProject(new ProjectModel(title, data));
       this.dialog.close({ action: 'open-project' });
     });
   }
 
   onSubmit(title: string) {
     if (title.trim().length > 1) {
-      this.homeService.projectData = new ProjectModel(title, '{ }');
+      this.homeService.createProject(new ProjectModel(title, '{ }'));
       this.dialog.close({ action: 'new-project' });
     }
   }

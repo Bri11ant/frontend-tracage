@@ -23,7 +23,7 @@ export class NewKeyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.keys = this.homeService.projectData.keys;
+    this.keys = this.homeService.getKeys();
 
     window.addEventListener('keydown', ($ev) => {
       if ($ev.code === 'Enter') {
@@ -74,9 +74,9 @@ export class NewKeyComponent implements OnInit {
   }
 
   onSync() {
-    const index = this.homeService.references.findIndex(
-      (ref) => ref === this.ref
-    );
+    const index = this.homeService
+      .getReferences()
+      .findIndex((ref) => ref === this.ref);
 
     const _dialogRef = this.dialog.open(SyncDialogComponent, {
       data: { index, from: 'new-key' },

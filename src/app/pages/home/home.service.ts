@@ -1,27 +1,39 @@
-import { ProjectModel } from './../../models/models';
+import { SyncDialogComponent } from './../../dialogs/sync-dialog/sync-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ProjectModel, KeyModel } from './../../models/models';
 // import { DATA_SAMPLE_PROJECT } from './../../data/project.data';
 import { Injectable } from '@angular/core';
 import { escapeRegExp } from 'src/app/utility/methods';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HomeService {
   // projectData = DATA_SAMPLE_PROJECT;
-  projectData: ProjectModel;
-  references: string[] = [];
+  private projectData: ProjectModel;
+  projectSubject = new Subject<ProjectModel>();
+  private references: string[] = [];
+  referenceSubject = new Subject<string[]>();
 
-  constructor() {
+  constructor(private dialog: MatDialog) {
     this.projectData = new ProjectModel('New project', '{ }');
     this.refreshReferences();
+  }
+
+  emitProjectSubject() {
+    this.projectSubject.next(this.projectData);
+  }
+
+  emitReferences() {
+    this.referenceSubject.next(this.references.slice());
   }
 
   refreshReferences() {
     this.references = this.projectData.keys
       .filter((k) => k.pin)
       .map((k) => k.id);
-
-    return this.references;
+    this.emitReferences();
   }
 
   printJSON() {
@@ -63,8 +75,7 @@ export class HomeService {
 }`;
 
     this.projectData.json = result;
-
-    return result;
+    this.emitProjectSubject();
   }
 
   cropResult(result: string, header: string) {
@@ -84,5 +95,113 @@ export class HomeService {
     "${header} :" {
         `
     );
+  }
+
+  /* SUBSCRIBE */
+  addNewKey(newKey: KeyModel) {
+    this.projectData.keys.push(newKey);
+    this.emitProjectSubject();
+  }
+
+  addNewReference(newRef: string) {
+    this.references.push(newRef);
+    this.emitReferences();
+  }
+
+  renameKey(keyName: string, index: number) {
+    this.projectData.keys[index].label = keyName;
+    this.emitProjectSubject();
+  }
+
+  toggleKeyVisibility(index: number) {
+    this.projectData.keys[index].visible =
+      !this.projectData.keys[index].visible;
+    this.emitProjectSubject();
+  }
+
+  setAllKeysVisible() {
+    this.projectData.keys.forEach((k) => (k.visible = true));
+    this.emitProjectSubject();
+  }
+
+  toggleKeyPin(index: number) {
+    this.projectData.keys[index].pin = !this.projectData.keys[index].pin;
+    this.emitProjectSubject();
+
+    if (!this.projectData.keys[index].pin) {
+      const _index = this.references.findIndex(
+        (_ref) => _ref === this.projectData.keys[index].id
+      );
+      this.references.splice(_index, 1);
+    } else {
+      this.references.push(this.projectData.keys[index].id);
+    }
+    this.emitReferences();
+  }
+
+  removeKey(index: number) {
+    if (this.projectData.keys[index].pin) {
+      const _index = this.references.findIndex(
+        (ref) => ref === this.projectData.keys[index].id
+      );
+      const _refToReset = this.references.splice(_index, 1);
+      this.emitReferences();
+
+      this.projectData.keys.forEach((k) => {
+        if (k.ref === _refToReset[0]) {
+          k.ref = '';
+        }
+      });
+    }
+    this.projectData.keys.splice(index, 1);
+    this.emitProjectSubject();
+  }
+
+  syncKey(index: number) {
+    const _dialogRef = this.dialog.open(SyncDialogComponent, {
+      data: { index, from: 'home' },
+    });
+
+    _dialogRef.afterClosed().subscribe((data) => {
+      if (!data) {
+        return;
+      }
+      this.projectData.keys[index].ref = data.ref;
+
+      if (data.ref) {
+        this.projectData.keys[index].pin = false;
+        const _index = this.references.findIndex(
+          (_ref) => _ref === this.projectData.keys[index].id
+        );
+        this.references.splice(_index, 1);
+        this.emitReferences();
+      }
+      this.emitProjectSubject();
+    });
+  }
+
+  sortKeys(keys: KeyModel[]) {
+    this.projectData.keys = keys;
+    this.emitProjectSubject();
+  }
+
+  manuallyEditJSON(newValue: string) {
+    this.projectData.json = newValue.trim();
+    this.emitProjectSubject();
+  }
+
+  createProject(newProject: ProjectModel) {
+    this.projectData = newProject;
+    this.emitProjectSubject();
+    this.references = ['titre'];
+    this.emitReferences();
+  }
+
+  getKeys() {
+    return this.projectData.keys;
+  }
+
+  getReferences() {
+    return this.references;
   }
 }

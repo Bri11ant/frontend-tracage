@@ -22,31 +22,37 @@ export class HomeComponent implements OnInit {
   constructor(private dialog: MatDialog, private homeService: HomeService) {}
 
   initProject() {
-    if (this.homeService.projectData) {
-      this.projectData = this.homeService.projectData;
-      this.references = this.homeService.references;
-
-      if (
-        this.projectData.title !== '' &&
-        this.projectData.title.toLocaleLowerCase() !== 'new project'
-      ) {
-        this.initShortcut();
-      } else {
-        const dialogRef = this.dialog.open(FileDialogComponent, {
-          autoFocus: false,
-          disableClose: true,
-          panelClass: 'landing-dialog-box',
-        });
-        dialogRef.afterClosed().subscribe((props: { action: string }) => {
-          if ((props.action === 'open-project', 'new-project')) {
-            this.initProject();
-          } else {
-            console.log('props:', props);
-          }
-        });
+    this.homeService.projectSubject.subscribe((_data) => {
+      if (_data) {
+        this.projectData = _data;
+        if (
+          this.projectData.title !== '' &&
+          this.projectData.title.toLocaleLowerCase() !== 'new project'
+        ) {
+          this.initShortcut();
+        } else {
+          const dialogRef = this.dialog.open(FileDialogComponent, {
+            autoFocus: false,
+            disableClose: true,
+            panelClass: 'landing-dialog-box',
+          });
+          // dialogRef.afterClosed().subscribe((props: { action: string }) => {
+          //   if ((props.action === 'open-project', 'new-project')) {
+          //     this.initProject();
+          //   } else {
+          //     console.log('props:', props);
+          //   }
+          // });
+        }
       }
-    }
-    this.getKeyInputRef(0)?.focus();
+      this.getKeyInputRef(0)?.focus();
+    });
+    this.homeService.emitProjectSubject();
+
+    this.homeService.referenceSubject.subscribe((_data) => {
+      this.references = _data ? _data : [];
+    });
+    this.homeService.emitReferences();
   }
 
   ngOnInit(): void {
@@ -65,12 +71,10 @@ export class HomeComponent implements OnInit {
             data.newKey.value = newKeyValue.trim();
           }
         }
-        this.projectData.keys.push(data.newKey);
-        this.homeService.projectData.keys = this.projectData.keys;
+        this.homeService.addNewKey(data.newKey);
 
         if (data.newKey.pin) {
-          this.references.push(data.newKey.id);
-          this.homeService.references = this.references;
+          this.homeService.addNewReference(data.newKey.id);
         }
       }
       this.dialog.closeAll();
@@ -93,8 +97,7 @@ export class HomeComponent implements OnInit {
       if (!data) {
         return;
       }
-      this.projectData.keys[index].label = data.newLabel;
-      this.homeService.projectData.keys[index] = this.projectData.keys[index];
+      this.homeService.renameKey(data.newLabel, index);
     });
   }
 
@@ -110,7 +113,7 @@ export class HomeComponent implements OnInit {
       ) {
         this.initProject();
       } else if (props && props.action === 'generate-JSON') {
-        const data = this.homeService.projectData.json;
+        const data = this.projectData.json;
         console.warn(data);
       } else {
         console.log('props:', props);
@@ -122,9 +125,7 @@ export class HomeComponent implements OnInit {
     if (index === 0) {
       return;
     }
-    this.projectData.keys[index].visible =
-      !this.projectData.keys[index].visible;
-    this.homeService.projectData.keys[index] = this.projectData.keys[index];
+    this.homeService.toggleKeyVisibility(index);
 
     const ref = this.getKeyInputRef(index);
     if (ref && ref.disabled) {
@@ -138,19 +139,7 @@ export class HomeComponent implements OnInit {
     if (index === 0) {
       return;
     }
-    this.projectData.keys[index].pin = !this.projectData.keys[index].pin;
-
-    if (!this.projectData.keys[index].pin) {
-      const _index = this.references.findIndex(
-        (_ref) => _ref === this.projectData.keys[index].id
-      );
-      this.references.splice(_index, 1);
-    } else {
-      this.references.push(this.projectData.keys[index].id);
-    }
-
-    this.homeService.references = this.references;
-    this.homeService.projectData.keys[index] = this.projectData.keys[index];
+    this.homeService.toggleKeyPin(index);
 
     const ref = this.getKeyInputRef(index);
     if (ref) {
@@ -161,44 +150,11 @@ export class HomeComponent implements OnInit {
   }
 
   onRemoveKey(index: number) {
-    if (this.projectData.keys[index].pin) {
-      const _index = this.references.findIndex(
-        (ref) => ref === this.projectData.keys[index].id
-      );
-      const _refToReset = this.references.splice(_index, 1);
-      this.homeService.references = this.references;
-
-      this.projectData.keys.forEach((k) => {
-        if (k.ref === _refToReset[0]) {
-          k.ref = '';
-        }
-      });
-    }
-    this.projectData.keys.splice(index, 1);
-    this.homeService.projectData.keys = this.projectData.keys;
+    this.homeService.removeKey(index);
   }
 
   onSync(index: number) {
-    const _dialogRef = this.dialog.open(SyncDialogComponent, {
-      data: { index, from: 'home' },
-    });
-
-    _dialogRef.afterClosed().subscribe((data) => {
-      if (!data) {
-        return;
-      }
-      this.projectData.keys[index].ref = data.ref;
-
-      if (data.ref) {
-        this.projectData.keys[index].pin = false;
-        const _index = this.references.findIndex(
-          (_ref) => _ref === this.projectData.keys[index].id
-        );
-        this.references.splice(_index, 1);
-        this.homeService.references = this.references;
-      }
-      this.homeService.projectData.keys[index] = this.projectData.keys[index];
-    });
+    this.homeService.syncKey(index);
   }
 
   onInputChange(key: KeyModel, value: string) {
@@ -245,7 +201,7 @@ export class HomeComponent implements OnInit {
     const titleRef = this.getKeyInputRef(0);
     if (titleRef && titleRef.value.trim().length > 0) {
       this.refreshOutput();
-      this.projectData.json = this.homeService.printJSON();
+      this.homeService.printJSON();
       this.refreshOutput();
     } else {
       alert('"title" key can\'t be empty!');
@@ -273,7 +229,7 @@ export class HomeComponent implements OnInit {
       return;
     }
     moveItemInArray(this.projectData.keys, prevIndex, newIndex);
-    this.homeService.projectData.keys = this.projectData.keys;
+    this.homeService.sortKeys(this.projectData.keys);
   }
 
   onSave() {
@@ -281,8 +237,7 @@ export class HomeComponent implements OnInit {
       '#JSON-output'
     ) as HTMLTextAreaElement;
     if (outputRef) {
-      this.projectData.json = outputRef.value.trim();
-      this.homeService.projectData.json = outputRef.value.trim();
+      this.homeService.manuallyEditJSON(outputRef.value.trim());
     }
     this.outputManuallyEdited = false;
     this.getKeyInputRef(0)?.focus();
@@ -349,6 +304,10 @@ export class HomeComponent implements OnInit {
 
           default:
             break;
+        }
+      } else if ($ev.ctrlKey) {
+        if ($ev.code.toLowerCase() === 'space' && $ev.shiftKey) {
+          this.homeService.setAllKeysVisible();
         }
       }
       /* PREVIEW */

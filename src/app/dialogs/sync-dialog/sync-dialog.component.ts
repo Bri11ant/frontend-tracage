@@ -1,3 +1,4 @@
+import { KeyModel } from './../../models/models';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HomeService } from './../../pages/home/home.service';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -10,6 +11,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 export class SyncDialogComponent implements OnInit {
   references: { label: string; id: string }[] = [];
   keys: { label: string; id: string }[] = [];
+  oldKeys: KeyModel[] = [];
   currentRef = '';
 
   constructor(
@@ -19,18 +21,20 @@ export class SyncDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.keys = this.homeService.projectData.keys.map((k) => ({
+    this.oldKeys = this.homeService.getKeys();
+
+    this.keys = this.oldKeys.map((k) => ({
       label: k.label,
       id: k.id,
     }));
 
     if (this.props.from === 'home') {
       this.keys = this.keys.filter(
-        (k) => k.id !== this.homeService.projectData.keys[this.props.index].id
+        (k) => k.id !== this.oldKeys[this.props.index].id
       );
     }
 
-    this.homeService.references.forEach((ref) => {
+    this.homeService.getReferences().forEach((ref) => {
       const key = this.keys.find((k) => k.id === ref);
       if (key) {
         this.references.push(key);
@@ -39,8 +43,7 @@ export class SyncDialogComponent implements OnInit {
 
     if (this.props.index > -1) {
       if (this.props.from === 'home') {
-        this.currentRef =
-          this.homeService.projectData.keys[this.props.index].ref;
+        this.currentRef = this.oldKeys[this.props.index].ref;
       } else {
         this.currentRef = this.keys[this.props.index].id;
       }

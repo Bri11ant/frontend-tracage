@@ -20,7 +20,7 @@ export class RenameKeyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.keys = this.homeService.projectData.keys;
+    this.keys = this.homeService.getKeys();
     this.key = this.keys[this.props.index];
 
     window.addEventListener('keydown', ($ev) => {
