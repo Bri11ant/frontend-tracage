@@ -1,5 +1,5 @@
 import { ProjectModel } from './../../models/models';
-import { DATA_SAMPLE_PROJECT } from './../../data/project.data';
+// import { DATA_SAMPLE_PROJECT } from './../../data/project.data';
 import { Injectable } from '@angular/core';
 import { escapeRegExp } from 'src/app/utility/methods';
 
@@ -12,7 +12,7 @@ export class HomeService {
   references: string[] = [];
 
   constructor() {
-    this.projectData = new ProjectModel('', '{ }');
+    this.projectData = new ProjectModel('New project', '{ }');
     this.refreshReferences();
   }
 

@@ -4,7 +4,7 @@ import { ProjectModel, KeyModel } from './../../models/models';
 import { HomeService } from './home.service';
 import { FileDialogComponent } from './../../dialogs/file-dialog/file-dialog.component';
 import { NewKeyComponent } from './../../dialogs/new-key/new-key.component';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -13,27 +13,44 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-  projectData = new ProjectModel('', '{ }');
+export class HomeComponent implements OnInit {
+  projectData = new ProjectModel('', '');
   references: string[] = [];
 
   outputManuallyEdited = false;
 
   constructor(private dialog: MatDialog, private homeService: HomeService) {}
 
-  ngOnInit(): void {
+  initProject() {
     if (this.homeService.projectData) {
       this.projectData = this.homeService.projectData;
       this.references = this.homeService.references;
+
+      if (
+        this.projectData.title !== '' &&
+        this.projectData.title.toLocaleLowerCase() !== 'new project'
+      ) {
+        this.initShortcut();
+      } else {
+        const dialogRef = this.dialog.open(FileDialogComponent, {
+          autoFocus: false,
+          disableClose: true,
+          panelClass: 'landing-dialog-box',
+        });
+        dialogRef.afterClosed().subscribe((props: { action: string }) => {
+          if ((props.action === 'open-project', 'new-project')) {
+            this.initProject();
+          } else {
+            console.log('props:', props);
+          }
+        });
+      }
     }
+    this.getKeyInputRef(0)?.focus();
   }
 
-  ngAfterViewInit(): void {
-    const titreRef = this.getKeyInputRef(0);
-    if (titreRef) {
-      titreRef.focus();
-    }
-    this.initShortcut();
+  ngOnInit(): void {
+    this.initProject();
   }
 
   onNewKey() {
@@ -82,7 +99,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   onFile() {
-    this.dialog.open(FileDialogComponent);
+    const dialogRef = this.dialog.open(FileDialogComponent, {
+      autoFocus: false,
+    });
+
+    dialogRef.afterClosed().subscribe((props: { action: string }) => {
+      if (
+        props &&
+        (props.action === 'open-project' || props.action === 'new-project')
+      ) {
+        this.initProject();
+      } else if (props && props.action === 'generate-JSON') {
+        const data = this.homeService.projectData.json;
+        console.warn(data);
+      } else {
+        console.log('props:', props);
+      }
+    });
   }
 
   onToggleKeyVisibility(index: number) {

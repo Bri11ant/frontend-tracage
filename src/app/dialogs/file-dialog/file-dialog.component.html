@@ -2,16 +2,55 @@
   <h2>File manager</h2>
 
   <div class="options">
-    <button mat-button class="option">
+    <button
+      mat-button
+      class="option"
+      (click)="newProjectField = !newProjectField"
+    >
       <mat-icon class="mat-18">library_add</mat-icon> <span>New project</span>
     </button>
-    <button mat-button class="option">
+    <div class="new-project-field" *ngIf="newProjectField">
+      <input
+        type="text"
+        #inputRef
+        (keyup)="onInputChange(inputRef, $event)"
+        id="new-project-name"
+      />
+
+      <button
+        (click)="onSubmit(inputRef.value)"
+        mat-raised-button
+        (click)="(null)"
+        color="primary"
+        [disabled]="inputRef.value.length < 1"
+      >
+        Create
+      </button>
+    </div>
+    <button
+      mat-button
+      class="option"
+      (click)="fileRef.click(); newProjectField = false"
+    >
       <mat-icon class="mat-18">create_new_folder</mat-icon>
       <span>Open project</span>
     </button>
-    <button mat-button class="option">
+    <button
+      mat-button
+      class="option"
+      [disabled]="hideGenJSON"
+      (click)="onGenerateJSON()"
+    >
       <mat-icon class="mat-18">insert_drive_file</mat-icon>
       <span>Generate JSON</span>
     </button>
   </div>
 </div>
+
+<input
+  #fileRef
+  type="file"
+  style="display: none"
+  accept=".json, .txt"
+  (change)="onOpenProject($event)"
+/>

@@ -3,11 +3,40 @@
   align-items: center;
   flex-direction: column;
   color: #2d2d2d;
+  width: 205px;
 
   h2 {
     color: rgb(192, 146, 29);
     font-weight: 500;
     margin-bottom: 0;
+  }
+
+  .new-project-field {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    input {
+      border: none;
+      outline: none;
+      background-color: rgb(255, 243, 177);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      outline: 2px solid #b2222200;
+      transition: 0.4s;
+    }
+
+    button[color="primary"] {
+      border-radius: 1.5rem;
+      background-color: #1e90ff !important;
+      margin: 1rem;
+      transition: all 0.3s;
+
+      &:disabled {
+        color: silver;
+        background-color: rgb(124, 154, 189) !important;
+      }
+    }
   }
 
   .options {
