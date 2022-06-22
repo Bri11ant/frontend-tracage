@@ -1,3 +1,5 @@
+import { RenameKeyComponent } from './../../dialogs/rename-key/rename-key.component';
+import { NewKeyComponent } from './../../dialogs/new-key/new-key.component';
 import { SyncDialogComponent } from './../../dialogs/sync-dialog/sync-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectModel, KeyModel } from './../../models/models';
@@ -98,9 +100,27 @@ export class HomeService {
   }
 
   /* SUBSCRIBE */
-  addNewKey(newKey: KeyModel) {
-    this.projectData.keys.push(newKey);
-    this.emitProjectSubject();
+  addNewKey() {
+    const newKeyRef = this.dialog.open(NewKeyComponent);
+    newKeyRef.afterClosed().subscribe((data) => {
+      if (data) {
+        if (data.newKey.ref.length > 0) {
+          const newKeyValue = this.projectData.keys.find(
+            (k) => k.id === data.newKey.ref
+          )?.value;
+          if (newKeyValue) {
+            data.newKey.value = newKeyValue.trim();
+          }
+        }
+        this.projectData.keys.push(data.newKey);
+        this.emitProjectSubject();
+
+        if (data.newKey.pin) {
+          this.addNewReference(data.newKey.id);
+        }
+      }
+      this.dialog.closeAll();
+    });
   }
 
   addNewReference(newRef: string) {
@@ -108,9 +128,18 @@ export class HomeService {
     this.emitReferences();
   }
 
-  renameKey(keyName: string, index: number) {
-    this.projectData.keys[index].label = keyName;
-    this.emitProjectSubject();
+  renameKey(index: number) {
+    const _dialogRef = this.dialog.open(RenameKeyComponent, {
+      data: { index },
+    });
+
+    _dialogRef.afterClosed().subscribe((data) => {
+      if (!data) {
+        return;
+      }
+      this.projectData.keys[index].label = data.newLabel;
+      this.emitProjectSubject();
+    });
   }
 
   toggleKeyVisibility(index: number) {

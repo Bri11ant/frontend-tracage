@@ -36,13 +36,14 @@ export class HomeComponent implements OnInit {
             disableClose: true,
             panelClass: 'landing-dialog-box',
           });
-          // dialogRef.afterClosed().subscribe((props: { action: string }) => {
-          //   if ((props.action === 'open-project', 'new-project')) {
-          //     this.initProject();
-          //   } else {
-          //     console.log('props:', props);
-          //   }
-          // });
+          dialogRef.afterClosed().subscribe((props: { action: string }) => {
+            if ((props.action === 'open-project', 'new-project')) {
+              // this.initProject();
+              this.getKeyInputRef(0)?.focus();
+            } else {
+              console.log('props:', props);
+            }
+          });
         }
       }
       this.getKeyInputRef(0)?.focus();
@@ -57,48 +58,21 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initProject();
+
+    setTimeout(() => {
+      this.getKeyInputRef(this.projectData.keys.length - 1)?.focus();
+    }, 100);
   }
 
   onNewKey() {
-    const newKeyRef = this.dialog.open(NewKeyComponent);
-    newKeyRef.afterClosed().subscribe((data) => {
-      if (data) {
-        if (data.newKey.ref.length > 0) {
-          const newKeyValue = this.projectData.keys.find(
-            (k) => k.id === data.newKey.ref
-          )?.value;
-          if (newKeyValue) {
-            data.newKey.value = newKeyValue.trim();
-          }
-        }
-        this.homeService.addNewKey(data.newKey);
-
-        if (data.newKey.pin) {
-          this.homeService.addNewReference(data.newKey.id);
-        }
-      }
-      this.dialog.closeAll();
-
-      setTimeout(() => {
-        this.getKeyInputRef(this.projectData.keys.length - 1)?.focus();
-      }, 100);
-    });
+    this.homeService.addNewKey();
   }
 
   onRename(index: number) {
     if (index === 0) {
       return;
     }
-    const _dialogRef = this.dialog.open(RenameKeyComponent, {
-      data: { index },
-    });
-
-    _dialogRef.afterClosed().subscribe((data) => {
-      if (!data) {
-        return;
-      }
-      this.homeService.renameKey(data.newLabel, index);
-    });
+    this.homeService.renameKey(index);
   }
 
   onFile() {
@@ -111,7 +85,8 @@ export class HomeComponent implements OnInit {
         props &&
         (props.action === 'open-project' || props.action === 'new-project')
       ) {
-        this.initProject();
+        // this.initProject();
+        this.getKeyInputRef(0)?.focus();
       } else if (props && props.action === 'generate-JSON') {
         const data = this.projectData.json;
         console.warn(data);
