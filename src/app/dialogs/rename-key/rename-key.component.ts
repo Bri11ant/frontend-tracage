@@ -1,8 +1,7 @@
 import { HomeService } from './../../pages/home/home.service';
-import { SyncDialogComponent } from './../sync-dialog/sync-dialog.component';
 import { KeyModel } from './../../models/models';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-rename-key',
@@ -11,32 +10,23 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class RenameKeyComponent implements OnInit {
   label = '';
-  pin = false;
-  ref = '';
   keys: KeyModel[] = [];
+  key!: KeyModel;
 
   constructor(
     private dialogRef: MatDialogRef<RenameKeyComponent>,
-    private dialog: MatDialog,
-    private homeService: HomeService
+    private homeService: HomeService,
+    @Inject(MAT_DIALOG_DATA) private props: { index: number }
   ) {}
 
   ngOnInit(): void {
     this.keys = this.homeService.projectData.keys;
+    this.key = this.keys[this.props.index];
 
     window.addEventListener('keydown', ($ev) => {
       if ($ev.code === 'Enter') {
         if (this.label.length > 0) {
           this.onSubmit();
-          // } else {
-          //   const submitRef = document.querySelector(
-          //     'button[color="primary"]'
-          //   ) as HTMLButtonElement;
-          //   if (submitRef) {
-          //     setTimeout(() => {
-          //       submitRef.click();
-          //     }, 200);
-          //   }
         }
       }
     });
@@ -44,7 +34,11 @@ export class RenameKeyComponent implements OnInit {
 
   onSubmit() {
     if (this.label.length < 1) {
-      // alert("Input can't be empty!");
+      return;
+    }
+
+    if (this.label.trim().toLowerCase() === this.key.label.toLowerCase()) {
+      this.dialogRef.close();
       return;
     }
 
@@ -53,46 +47,23 @@ export class RenameKeyComponent implements OnInit {
         (k) => k.label.toLowerCase() === this.label.toLowerCase()
       ) > -1
     ) {
-      // alert('Key exists already!');
       return;
     }
-
-    const newKey = new KeyModel(this.label.trim(), this.pin);
-    newKey.ref = this.ref;
-
-    this.dialogRef.close({ newKey });
+    this.dialogRef.close({ newLabel: this.label.toLowerCase() });
   }
 
   onInputChange(elementRef: HTMLInputElement) {
     this.label = elementRef.value;
     const found =
       this.keys.findIndex(
-        (k) => k.label.toLowerCase() === this.label.toLowerCase()
+        (k) =>
+          k.label.toLowerCase() === this.label.toLowerCase().trim() &&
+          this.label.toLowerCase().trim() !== this.key.label.toLowerCase()
       ) > -1;
     if (found) {
       elementRef.style.outline = '2px solid #b22222';
     } else {
       elementRef.style.outline = '2px solid #b2222200';
     }
-  }
-
-  onSync() {
-    const index = this.homeService.references.findIndex(
-      (ref) => ref === this.ref
-    );
-
-    const _dialogRef = this.dialog.open(SyncDialogComponent, {
-      data: { index, from: 'new-key' },
-    });
-
-    _dialogRef.afterClosed().subscribe((data) => {
-      if (data) {
-        this.ref = data.ref;
-
-        if (data.ref && data.ref.length > 0) {
-          this.pin = false;
-        }
-      }
-    });
   }
 }

@@ -1,6 +1,7 @@
 import { ProjectModel } from './../../models/models';
 import { DATA_SAMPLE_PROJECT } from './../../data/project.data';
 import { Injectable } from '@angular/core';
+import { replaceAll } from 'src/app/utility/methods';
 
 @Injectable({
   providedIn: 'root',
@@ -27,17 +28,40 @@ export class HomeService {
     let result = this.projectData.json;
     const keys = this.projectData.keys.filter((k) => k.visible);
 
-    if (result === '{ }') {
+    if (
+      !result ||
+      result.trim() === '{ }' ||
+      result.trim() === '{}' ||
+      result.trim() === ''
+    ) {
       result = `{
-    "${keys[0].value.trim().replace(',', '.')} :" {
+    "${replaceAll(
+      replaceAll(replaceAll(keys[0].value.trim(), '\\', '\\\\'), '"', `\\"`),
+      ',',
+      '.'
+    )}" : {
         `;
     } else {
-      result = this.cropResult(result, keys[0].value.trim().replace(',', '.'));
+      result = this.cropResult(
+        result,
+        replaceAll(
+          replaceAll(
+            replaceAll(keys[0].value.trim(), '\\', '\\\\'),
+            '"',
+            `\\"`
+          ),
+          ',',
+          '.'
+        )
+      );
     }
 
     keys.forEach((k, index) => {
       if (index !== 0) {
-        result += `"${k.label.trim()}": "${k.value.trim().replace(',', '.')}"${
+        result += `"${k.label.trim()}": "${k.value
+          .trim()
+          .replace(',', '.')
+          .replace('"', `\\"`)}"${
           index === keys.length - 1
             ? `
     }`

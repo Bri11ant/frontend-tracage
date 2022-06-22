@@ -28,15 +28,6 @@ export class NewKeyComponent implements OnInit {
       if ($ev.code === 'Enter') {
         if (this.label.length > 0) {
           this.onSubmit();
-          // } else {
-          //   const submitRef = document.querySelector(
-          //     'button[color="primary"]'
-          //   ) as HTMLButtonElement;
-          //   if (submitRef) {
-          //     setTimeout(() => {
-          //       submitRef.click();
-          //     }, 200);
-          //   }
         }
       }
     });
@@ -50,11 +41,16 @@ export class NewKeyComponent implements OnInit {
 
     if (
       this.keys.findIndex(
-        (k) => k.label.toLowerCase() === this.label.toLowerCase()
+        (k) => k.label.toLowerCase() === this.label.toLowerCase().trim()
       ) > -1
     ) {
       // alert('Key exists already!');
       return;
+    }
+
+    let newKeyID = this.label.toLowerCase().replace(' ', '_').trim();
+    if (this.keys.findIndex((k) => k.id === newKeyID) > -1) {
+      newKeyID += new Date().getTime();
     }
 
     const newKey = new KeyModel(this.label.trim(), this.pin);
@@ -67,7 +63,7 @@ export class NewKeyComponent implements OnInit {
     this.label = elementRef.value;
     const found =
       this.keys.findIndex(
-        (k) => k.label.toLowerCase() === this.label.toLowerCase()
+        (k) => k.label.toLowerCase() === this.label.toLowerCase().trim()
       ) > -1;
     if (found) {
       elementRef.style.outline = '2px solid #b22222';
