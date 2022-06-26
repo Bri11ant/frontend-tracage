@@ -13,6 +13,7 @@ export function generateID(label: string) {
   let id = label
     .trim()
     .toLowerCase()
-    .replace(/[.*+?^${}()|[\]\\ '"]/g, '_');
+    .replace(/[.*+?^,=/!:${}()|[\]\\ '"&]/g, '_')
+    .replace(/[0-9]/g, '_$1');
   return id;
 }
