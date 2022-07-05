@@ -19,7 +19,7 @@ export class HomeService {
   referenceSubject = new Subject<string[]>();
 
   constructor(private dialog: MatDialog) {
-    this.projectData = new ProjectModel('New project', '{ }');
+    this.projectData = new ProjectModel('', '');
     this.refreshReferences();
   }
 
@@ -222,7 +222,7 @@ export class HomeService {
   createProject(newProject: ProjectModel) {
     this.projectData = newProject;
     this.emitProjectSubject();
-    this.references = ['titre'];
+    this.references = [];
     this.emitReferences();
   }
 

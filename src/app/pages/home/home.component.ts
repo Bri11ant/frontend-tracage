@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
         this.projectData = _data;
         if (
           this.projectData.title !== '' &&
-          this.projectData.title.toLocaleLowerCase() !== 'new project'
+          this.projectData.title.toLocaleLowerCase().trim() !== ''
         ) {
           this.initShortcut();
         } else {

@@ -7,6 +7,7 @@
       </header>
 
       <section
+        *ngIf="projectData.title.length > 0"
         class="items"
         cdkDropList
         (cdkDropListDropped)="onReorder($event)"
