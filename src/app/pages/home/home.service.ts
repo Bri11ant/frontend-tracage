@@ -57,10 +57,9 @@ export class HomeService {
 
     keys.forEach((k, index) => {
       if (index !== 0) {
-        result += `"${k.label.trim()}": "${k.value
-          .trim()
-          .replace(',', '.')
-          .replace('"', `\\"`)}"${
+        result += `"${escapeRegExp(k.label)}": "${escapeRegExp(
+          k.value.replace(',', '.')
+        )}"${
           index === keys.length - 1
             ? `
     }`

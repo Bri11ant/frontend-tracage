@@ -7,9 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "dev:electron": "electron ./dist/frontend-tracage/app.js",
-    "start:electron": "ng build --base-href=./ && electron  ./dist/frontend-tracage/app.js",
-    "build:win32": "ng build --base-href=./ && electron-packager ./dist/frontend-tracage --platform=win32"
+    "dev:electron": "electron ./dist/frontend-tracage/index.js",
+    "start:electron": "ng build --base-href=./ && electron  ./dist/frontend-tracage/index.js",
+    "build:win32": "ng build --base-href=./ && electron-packager ./dist/frontend-tracage --platform=win32",
+    "export:electron":"electron-packager ./dist/frontend-tracage --platform=win32"
   },
   "private": true,
   "dependencies": {
