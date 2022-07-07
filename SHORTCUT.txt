@@ -1,0 +1,58 @@
+
+
+    MODE D'EMPLOI
+---------------------
+
+# Lorsqu'on ajoute un "pin" sur une clé, il peut être utiliser comme référence par d'autre clé.
+
+# On utilise le "sync" pour synchroniser une clé à une référence.
+
+# On click sur l'icon "visible | invisible" pour ignorer ou prendre en compt un champ de texte.
+
+# On peut effectuer des modifications directement dans le champ de texte à droite (aperçu JSON)
+mais il faut appuyer sur "save" ou utiliser le raccourci "Alt + S" pour enrégister les modifications.
+
+# Il faut appuyer sur "submit" ou utiliser le raccourci "Shift + Enter | Ctrl + Enter"
+pour ajouter l'objet courrant.
+
+# Les clés soulignées sont des références.
+
+# Les clés grisées sont ignorées
+
+# La clé "titre" est le titre de l'objet courrant
+
+# La clé "titre" ne peut pas être ignorer
+
+# La clé "titre" est une référence par défaut
+
+-------------------------------------------------
+
+
+
+    SHORTCUT list
+---------------------
+
+***  Dans un champ de texte  ***
+
+# Suivant: Enter | Tab
+
+# Ignorer (invisible): Ctrl + Space | Shift + Space
+
+# Ajouter | retirer un "pin": Alt + P
+
+# Renomer une clé: Alt + R
+
+# Ajouter l'objet: Shift + Enter | Ctrl + Enter
+
+***************************************************
+
+
+***  Global  ***
+
+# Menu du fichier: Alt + O
+
+# Nouvelle clé: Alt + N
+
+# Savegarder les modifications manuelles (aperçu JSON): Alt + S
+
+********************************************************************
