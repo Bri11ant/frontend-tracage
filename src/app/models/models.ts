@@ -10,6 +10,9 @@ export class KeyModel {
     if (ref) {
       this.ref = ref;
     }
+    if (label === 'statut') {
+      this.value = 'Disponible';
+    }
   }
 }
 
