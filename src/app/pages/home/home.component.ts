@@ -184,6 +184,14 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     const titleRef = this.getKeyInputRef(0);
     if (titleRef && titleRef.value.trim().length > 0) {
+      if (
+        this.projectData.json.match(
+          new RegExp(`.*"${titleRef.value.trim()}"[ ]*:[ ]*{.*`, 'i')
+        )
+      ) {
+        alert('Key exists already!');
+        return;
+      }
       this.refreshOutput();
       this.homeService.printJSON();
       this.refreshOutput();
