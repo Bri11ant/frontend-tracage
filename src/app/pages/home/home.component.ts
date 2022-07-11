@@ -65,8 +65,14 @@ export class HomeComponent implements OnInit {
     }, 100);
   }
 
-  onNewKey() {
-    this.homeService.addNewKey();
+  async onNewKey() {
+    const res = await this.homeService.addNewKey();
+    if (res) {
+      setTimeout(() => {
+        const ref = document.querySelector(`.${res}-ref input`) as HTMLElement;
+        ref?.focus();
+      }, 10);
+    }
   }
 
   onRename(index: number) {

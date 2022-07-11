@@ -100,25 +100,32 @@ export class HomeService {
 
   /* SUBSCRIBE */
   addNewKey() {
-    const newKeyRef = this.dialog.open(NewKeyComponent);
-    newKeyRef.afterClosed().subscribe((data) => {
-      if (data) {
-        if (data.newKey.ref.length > 0) {
-          const newKeyValue = this.projectData.keys.find(
-            (k) => k.id === data.newKey.ref
-          )?.value;
-          if (newKeyValue) {
-            data.newKey.value = newKeyValue.trim();
+    return new Promise<string>((resolve, reject) => {
+      const newKeyRef = this.dialog.open(NewKeyComponent);
+      newKeyRef.afterClosed().subscribe((data) => {
+        if (data) {
+          if (data.newKey.ref.length > 0) {
+            const newKeyValue = this.projectData.keys.find(
+              (k) => k.id === data.newKey.ref
+            )?.value;
+            if (newKeyValue) {
+              data.newKey.value = newKeyValue.trim();
+            }
           }
-        }
-        this.projectData.keys.push(data.newKey);
-        this.emitProjectSubject();
+          this.projectData.keys.push(data.newKey);
+          this.emitProjectSubject();
 
-        if (data.newKey.pin) {
-          this.addNewReference(data.newKey.id);
+          if (data.newKey.pin) {
+            this.addNewReference(data.newKey.id);
+          }
+          this;
         }
-      }
-      this.dialog.closeAll();
+        this.dialog.closeAll();
+
+        if (data) {
+          resolve(data.newKey.id);
+        }
+      });
     });
   }
 

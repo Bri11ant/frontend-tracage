@@ -14,6 +14,6 @@ export function generateID(label: string) {
     .trim()
     .toLowerCase()
     .replace(/[.*+?^,=/!:${}()|[\]\\ '"&]/g, '_')
-    .replace(/[0-9]/g, '_$1');
+    .replace(/[0-9]/g, '_$&');
   return id;
 }
