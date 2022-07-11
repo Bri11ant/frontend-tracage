@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
           dialogRef.afterClosed().subscribe((props: { action: string }) => {
             if ((props.action === 'open-project', 'new-project')) {
               // this.initProject();
+              this.homeService.refreshReferences();
               this.getKeyInputRef(0)?.focus();
             } else {
               console.log('props:', props);
@@ -86,6 +87,7 @@ export class HomeComponent implements OnInit {
         (props.action === 'open-project' || props.action === 'new-project')
       ) {
         // this.initProject();
+        this.homeService.refreshReferences();
         this.getKeyInputRef(0)?.focus();
         this.refreshOutput();
       } else if (props && props.action === 'generate-JSON') {
