@@ -59,7 +59,7 @@ export class HomeService {
       if (index !== 0) {
         result += `"${escapeRegExp(k.label)}": "${
           k.label.trim().match(/(type|type_css)/)
-            ? 'T' + k.value.trim()
+            ? (k.value.trim() ? 'T' : '') + k.value.trim()
             : escapeRegExp(k.value.replace(',', '.'))
         }"${
           index === keys.length - 1
