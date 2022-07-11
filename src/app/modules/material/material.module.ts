@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {} from '@angular/material/';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {} from '@angular/material/';
 import {} from '@angular/material/';
 import {} from '@angular/material/';
@@ -26,6 +26,7 @@ const materials = [
   MatDialogModule,
   MatRadioModule,
   DragDropModule,
+  MatSnackBarModule,
 ];
 
 @NgModule({

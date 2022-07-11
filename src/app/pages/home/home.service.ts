@@ -57,10 +57,10 @@ export class HomeService {
 
     keys.forEach((k, index) => {
       if (index !== 0) {
-        result += `"${escapeRegExp(k.label)}": "${
+        result += `"${escapeRegExp(k.label, 'JSON')}": "${
           k.label.trim().match(/(type|type_css)/)
             ? (k.value.trim() ? 'T' : '') + k.value.trim()
-            : escapeRegExp(k.value.replace(',', '.'))
+            : escapeRegExp(k.value.replace(',', '.'), 'JSON')
         }"${
           index === keys.length - 1
             ? `

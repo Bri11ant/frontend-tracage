@@ -1,9 +1,11 @@
+import { escapeRegExp } from 'src/app/utility/methods';
 import { ProjectModel, KeyModel } from './../../models/models';
 import { HomeService } from './home.service';
 import { FileDialogComponent } from './../../dialogs/file-dialog/file-dialog.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,11 @@ export class HomeComponent implements OnInit {
 
   outputManuallyEdited = false;
 
-  constructor(private dialog: MatDialog, private homeService: HomeService) {}
+  constructor(
+    private dialog: MatDialog,
+    private homeService: HomeService,
+    private toast: MatSnackBar
+  ) {}
 
   initProject() {
     this.homeService.projectSubject.subscribe((_data) => {
@@ -183,17 +189,26 @@ export class HomeComponent implements OnInit {
     if (titleRef && titleRef.value.trim().length > 0) {
       if (
         this.projectData.json.match(
-          new RegExp(`.*"${titleRef.value.trim()}"[ ]*:[ ]*{.*`, 'i')
+          new RegExp(
+            `.*${escapeRegExp(titleRef.value, 'JSON')}.*:[ ]*\{.*`,
+            'i'
+          )
         )
       ) {
-        alert('Key exists already!');
+        this.toast.open(`"${titleRef.value.trim()}" exists already !`, 'ok', {
+          panelClass: 'toast-error',
+          duration: 2500,
+        });
         return;
       }
       this.refreshOutput();
       this.homeService.printJSON();
       this.refreshOutput();
     } else {
-      alert('"title" key can\'t be empty!');
+      this.toast.open('"titre" can\'t be empty !', 'ok', {
+        panelClass: 'toast-error',
+        duration: 2500,
+      });
     }
     const outputRef = document.querySelector(
       '#JSON-output'
@@ -229,6 +244,10 @@ export class HomeComponent implements OnInit {
       this.homeService.manuallyEditJSON(outputRef.value.trim());
     }
     this.outputManuallyEdited = false;
+
+    this.toast.open(`Data output saved !`, 'ok', {
+      duration: 2500,
+    });
     this.getKeyInputRef(0)?.focus();
   }
 
