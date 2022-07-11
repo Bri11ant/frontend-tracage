@@ -1,9 +1,6 @@
-import { RenameKeyComponent } from './../../dialogs/rename-key/rename-key.component';
-import { SyncDialogComponent } from './../../dialogs/sync-dialog/sync-dialog.component';
 import { ProjectModel, KeyModel } from './../../models/models';
 import { HomeService } from './home.service';
 import { FileDialogComponent } from './../../dialogs/file-dialog/file-dialog.component';
-import { NewKeyComponent } from './../../dialogs/new-key/new-key.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';

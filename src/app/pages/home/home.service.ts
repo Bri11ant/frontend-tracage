@@ -95,7 +95,8 @@ export class HomeService {
     return (
       result.slice(0, lastBraceIndex + 1) +
       `,
-    "${header} :" {
+
+    "${header}" : {
         `
     );
   }
