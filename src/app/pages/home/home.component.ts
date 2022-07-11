@@ -87,6 +87,7 @@ export class HomeComponent implements OnInit {
       ) {
         // this.initProject();
         this.getKeyInputRef(0)?.focus();
+        this.refreshOutput();
       } else if (props && props.action === 'generate-JSON') {
         const data = this.projectData.json;
         console.warn(data);
